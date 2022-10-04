@@ -1,0 +1,8 @@
+.color {
+    display: inline-block;
+    border: 1px solid black;
+    height: 80px;
+    width: 80px;
+    list-style: none;
+    margin: 5px;
+}
