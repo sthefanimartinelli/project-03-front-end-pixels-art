@@ -95,6 +95,10 @@ window.onload = function () {
 
     function createPixels(pixelBoardWidth) {
         let frameSection = document.getElementById('pixel-board'); // Pega o elemento section que vai armazenar todas as ul's que serão criadas;
+        let widthLocalStorage = JSON.parse(localStorage.getItem('boardSize'));
+        if (widthLocalStorage) {
+            pixelBoardWidth = widthLocalStorage;
+        }
         for (let indexLine = 0; indexLine < pixelBoardWidth; indexLine += 1) { // Cria a quantidade de ul's conforme informado do pixelBoardWidth, que vão ser como as linhas da tabela;
             let lineUl = document.createElement('ul');
             lineUl.classList.add('lineUl');
@@ -106,6 +110,7 @@ window.onload = function () {
             }
         }
     }
+
 
     function addColorToPixels() {
         let pixels = document.querySelectorAll('#pixel-board li')
@@ -195,6 +200,7 @@ window.onload = function () {
             localStorage.removeItem('pixelBoard');
             createPixelsFrame(inputNumber);
         }
+        addBoarderSizeToLocalStorage()
     });
 
     // Crie uma função que limite o tamanho mínimo e máximo do quadro de pixels.
@@ -210,7 +216,12 @@ window.onload = function () {
         }
         return inputNumber;
     }
+    // Crie uma função para manter o tamanho novo do board ao recarregar a página.
 
+    function addBoarderSizeToLocalStorage() {
+        let inputNumber = document.querySelector('#board-size').value;
+        localStorage.setItem('boardSize', JSON.stringify(inputNumber));
+    }
 }
 
 
