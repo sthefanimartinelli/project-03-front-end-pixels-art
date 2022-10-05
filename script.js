@@ -95,4 +95,19 @@ createPixelsFrame(5);
 
 // Defina a cor preta como cor inicial da paleta de cores
 
+// Crie uma função para selecionar uma cor na paleta de cores e preencha os pixels no quadro.
+
+let quadrados = document.getElementsByClassName('color');
+
+for (let index = 0; index <quadrados.length; index += 1) {
+    quadrados[index].addEventListener('click', selectColor);    
+}
+
+function selectColor(event){
+    if (!event.target.classList.contains('selected')){
+        let elementWithSelected = document.querySelector('.selected');
+        elementWithSelected.classList.remove('selected');
+        event.target.classList.add('selected');
+    }
+} 
 }
