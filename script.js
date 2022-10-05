@@ -161,13 +161,13 @@ window.onload = function () {
         resetButton.innerHTML = 'Limpar';
         buttonResetSection.appendChild(resetButton);
 
-        resetButton.addEventListener('click', function (){
+        resetButton.addEventListener('click', function () {
             clearPixelBoard();
             addPixelColorsToLocalStorage();
         });
     }
 
-    function clearPixelBoard () {
+    function clearPixelBoard() {
         let pixels = document.querySelectorAll('#pixel-board li');
         for (let index = 0; index < pixels.length; index += 1) {
             pixels[index].style.backgroundColor = 'white';
@@ -190,14 +190,26 @@ window.onload = function () {
     let changeBoardSizeButton = document.querySelector('#generate-board');
 
     changeBoardSizeButton.addEventListener('click', function () {
-        let inputNumber = document.querySelector('#board-size').value;
-        if(!inputNumber){
-            alert('Board inválido!')
-        } else {
-        localStorage.removeItem('pixelBoard');
-        createPixelsFrame(inputNumber);
+        let inputNumber = limitInput();
+        if (inputNumber) {
+            localStorage.removeItem('pixelBoard');
+            createPixelsFrame(inputNumber);
         }
     });
+
+    // Crie uma função que limite o tamanho mínimo e máximo do quadro de pixels.
+
+    function limitInput() {
+        let inputNumber = document.querySelector('#board-size').value;
+        if (!inputNumber) {
+            alert('Board inválido!');
+        } else if (inputNumber < 5) {
+            inputNumber = 5;
+        } else if (inputNumber > 50) {
+            inputNumber = 50;
+        }
+        return inputNumber;
+    }
 
 }
 
