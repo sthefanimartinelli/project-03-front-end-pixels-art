@@ -78,6 +78,22 @@ window.onload = function () {
 
     // Adicione à página um quadro contendo 25 pixels.
     function createPixelsFrame(pixelBoardWidth) { // Função que cria um quadro de pixels de acordo com o tamanho PixelBoardWidth fornecido;
+        deleteOldPixels();
+        createPixels(pixelBoardWidth);
+        addColorToPixels();
+        addEventListenerToBoard();
+    }
+
+    function deleteOldPixels() {
+        let oldPixels = document.querySelectorAll('#pixel-board ul')
+        if (oldPixels) {
+            for (let index = 0; index < oldPixels.length; index += 1) {
+                oldPixels[index].remove();
+            }
+        }
+    }
+
+    function createPixels(pixelBoardWidth) {
         let frameSection = document.getElementById('pixel-board'); // Pega o elemento section que vai armazenar todas as ul's que serão criadas;
         for (let indexLine = 0; indexLine < pixelBoardWidth; indexLine += 1) { // Cria a quantidade de ul's conforme informado do pixelBoardWidth, que vão ser como as linhas da tabela;
             let lineUl = document.createElement('ul');
@@ -89,6 +105,9 @@ window.onload = function () {
                 lineUl.appendChild(pixelItem);
             }
         }
+    }
+
+    function addColorToPixels() {
         let pixels = document.querySelectorAll('#pixel-board li')
         let pixelColorsSaved = getColorsFromLocalStorage('pixelBoard');
         for (let index = 0; index < pixels.length; index += 1) {
@@ -99,8 +118,16 @@ window.onload = function () {
             }
         }
     }
-    createPixelsFrame(5);
 
+    function addEventListenerToBoard() {
+        let pixels = document.querySelectorAll('#pixel-board li');
+
+        for (let indexLi = 0; indexLi < pixels.length; indexLi += 1) {
+            pixels[indexLi].addEventListener('click', paintPixel);
+        }
+    }
+
+    createPixelsFrame(5);
     // Defina a cor preta como cor inicial da paleta de cores
 
     // Crie uma função para selecionar uma cor na paleta de cores e preencha os pixels no quadro.
@@ -120,13 +147,6 @@ window.onload = function () {
     }
 
     // Crie uma função que permita preencher um pixel do quadro com a cor selecionada na paleta de cores.
-
-    let pixels = document.querySelectorAll('#pixel-board li');
-
-    for (let indexLi = 0; indexLi < pixels.length; indexLi += 1) {
-        pixels[indexLi].addEventListener('click', paintPixel);
-    }
-
     function paintPixel(event) {
         let colorSelected = document.querySelector('.selected').style.backgroundColor;
         event.target.style.backgroundColor = colorSelected;
@@ -134,19 +154,27 @@ window.onload = function () {
     }
 
     // Crie um botão que retorne a cor do quadro para a cor inicial.
-    let buttonResetSection = document.getElementById('button-reset');
-    let resetButton = document.createElement('button'); // Cria o elemento botão no HTML;
-    resetButton.id = 'clear-board';
-    resetButton.innerHTML = 'Limpar';
-    buttonResetSection.appendChild(resetButton);
+    function createResetButton() {
+        let buttonResetSection = document.getElementById('button-reset');
+        let resetButton = document.createElement('button'); // Cria o elemento botão no HTML;
+        resetButton.id = 'clear-board';
+        resetButton.innerHTML = 'Limpar';
+        buttonResetSection.appendChild(resetButton);
 
-    resetButton.addEventListener('click', function () {
+        resetButton.addEventListener('click', function (){
+            clearPixelBoard();
+            addPixelColorsToLocalStorage();
+        });
+    }
+
+    function clearPixelBoard () {
         let pixels = document.querySelectorAll('#pixel-board li');
         for (let index = 0; index < pixels.length; index += 1) {
             pixels[index].style.backgroundColor = 'white';
         }
-        addPixelColorsToLocalStorage();
-    });
+    }
+
+    createResetButton();
 
     // Crie uma função para salvar e recuperar o seu desenho atual no localStorage
     function addPixelColorsToLocalStorage() {
@@ -157,6 +185,20 @@ window.onload = function () {
         }
         localStorage.setItem('pixelBoard', JSON.stringify(pixelsArray));
     }
+
+    // Crie um input que permita à pessoa usuária preencher um novo tamanho para o quadro de pixels.
+    let changeBoardSizeButton = document.querySelector('#generate-board');
+
+    changeBoardSizeButton.addEventListener('click', function () {
+        let inputNumber = document.querySelector('#board-size').value;
+        if(!inputNumber){
+            alert('Board inválido!')
+        } else {
+        localStorage.removeItem('pixelBoard');
+        createPixelsFrame(inputNumber);
+        }
+    });
+
 }
 
 
