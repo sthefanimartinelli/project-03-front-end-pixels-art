@@ -1,3 +1,4 @@
+window.onload = function(){
 let paletaCores = document.getElementById('color-palette');
 
 // Adiciona à página uma paleta contendo 4 cores distintas, sendo a primeira cor preta.
@@ -9,6 +10,9 @@ function createPalette(numberOfColors, arrayOfcolors){ // A função createPalet
             let colorSelector = document.createElement('li');
             colorSelector.classList.add('color')
             colorSelector.style.backgroundColor = savedColors[index];
+            if (savedColors[index] === 'black'){
+                colorSelector.classList.add('selected');
+            }
             paletaCores.appendChild(colorSelector);
         }
     } else { // Se não existirem cores armazenadas, ele vai usar uma array com cores padrão para gerar a paleta;
@@ -16,6 +20,9 @@ function createPalette(numberOfColors, arrayOfcolors){ // A função createPalet
             let colorSelector = document.createElement('li');
             colorSelector.classList.add('color')
             colorSelector.style.backgroundColor = arrayOfcolors[index];
+            if (arrayOfcolors[index] === 'black'){
+                colorSelector.classList.add('selected');
+            }
             paletaCores.appendChild(colorSelector);
         }
     }
@@ -71,12 +78,12 @@ function getColorsFromLocalStorage(){ // Função que pega as cores das li's no 
 
 // Adicione à página um quadro contendo 25 pixels.
 function createPixelsFrame(pixelBoardWidth){ // Função que cria um quadro de pixels de acordo com o tamanho PixelBoardWidth fornecido;
-    let frameSection = document.getElementById('pixel-board');
-    for (let indexLine = 0; indexLine < pixelBoardWidth; indexLine += 1) {
+    let frameSection = document.getElementById('pixel-board'); // Pega o elemento section que vai armazenar todas as ul's que serão criadas;
+    for (let indexLine = 0; indexLine < pixelBoardWidth; indexLine += 1) { // Cria a quantidade de ul's conforme informado do pixelBoardWidth, que vão ser como as linhas da tabela;
         let lineUl = document.createElement('ul');
         lineUl.classList.add('lineUl');
         frameSection.appendChild(lineUl);
-        for (let index = 0; index < pixelBoardWidth; index += 1) {
+        for (let index = 0; index < pixelBoardWidth; index += 1) { // Cria a quantidade de li's em cada ul, que seria a quantidade de quadrados em cada linha;
             let pixelItem = document.createElement('li');
             pixelItem.classList.add('pixel');
             pixelItem.style.backgroundColor = 'white';
@@ -85,3 +92,7 @@ function createPixelsFrame(pixelBoardWidth){ // Função que cria um quadro de p
     }
 }
 createPixelsFrame(5);
+
+// Defina a cor preta como cor inicial da paleta de cores
+
+}
