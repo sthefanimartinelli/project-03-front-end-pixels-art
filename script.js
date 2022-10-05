@@ -4,7 +4,7 @@ window.onload = function () {
     // Adiciona à página uma paleta contendo 4 cores distintas, sendo a primeira cor preta.
 
     function createPalette(numberOfColors, arrayOfcolors) { // A função createPalette recebe dois parâmetros para ser inicializada. Se já houverem dados de cores já armazenados, ela vai ignorar esses inputs. Se não, ela vai usá-los;
-        let savedColors = getColorsFromLocalStorage(); // A função getColorsFromLocalStorage busca a string armazenada no localStorage e retorna uma array;
+        let savedColors = getColorsFromLocalStorage('colorPalette'); // A função getColorsFromLocalStorage busca a string armazenada no localStorage e retorna uma array;
         if (savedColors) { // Se existirem cores armazenadas no localStorage, então ele vai buscá-las e criar elementos li com as cores armazenadas;
             for (let index = 0; index < savedColors.length; index += 1) {
                 let colorSelector = document.createElement('li');
@@ -72,8 +72,8 @@ window.onload = function () {
         localStorage.setItem('colorPalette', JSON.stringify(colorsToLocalStorage)); // Transforma array em string e cria um item com a chave colorPalette;
     }
 
-    function getColorsFromLocalStorage() { // Função que pega as cores das li's no localStorage;
-        return JSON.parse(localStorage.getItem('colorPalette')); // Transforma a string em array de novo;
+    function getColorsFromLocalStorage(chave) { // Função que pega as cores das li's no localStorage;
+        return JSON.parse(localStorage.getItem(chave)); // Transforma a string em array de novo;
     }
 
     // Adicione à página um quadro contendo 25 pixels.
@@ -86,8 +86,16 @@ window.onload = function () {
             for (let index = 0; index < pixelBoardWidth; index += 1) { // Cria a quantidade de li's em cada ul, que seria a quantidade de quadrados em cada linha;
                 let pixelItem = document.createElement('li');
                 pixelItem.classList.add('pixel');
-                pixelItem.style.backgroundColor = 'white';
                 lineUl.appendChild(pixelItem);
+            }
+        }
+        let pixels = document.querySelectorAll('#pixel-board li')
+        let pixelColorsSaved = getColorsFromLocalStorage('pixelBoard');
+        for (let index = 0; index < pixels.length; index += 1) {
+            if (pixelColorsSaved) {
+                pixels[index].style.backgroundColor = pixelColorsSaved[index];
+            } else {
+                pixels[index].style.backgroundColor = 'white';
             }
         }
     }
@@ -119,9 +127,10 @@ window.onload = function () {
         pixels[indexLi].addEventListener('click', paintPixel);
     }
 
-    function paintPixel(event){
+    function paintPixel(event) {
         let colorSelected = document.querySelector('.selected').style.backgroundColor;
         event.target.style.backgroundColor = colorSelected;
+        addPixelColorsToLocalStorage();
     }
 
     // Crie um botão que retorne a cor do quadro para a cor inicial.
@@ -131,12 +140,26 @@ window.onload = function () {
     resetButton.innerHTML = 'Limpar';
     buttonResetSection.appendChild(resetButton);
 
-    resetButton.addEventListener('click', function(){
+    resetButton.addEventListener('click', function () {
         let pixels = document.querySelectorAll('#pixel-board li');
         for (let index = 0; index < pixels.length; index += 1) {
             pixels[index].style.backgroundColor = 'white';
         }
+        addPixelColorsToLocalStorage();
     });
+
+    // Crie uma função para salvar e recuperar o seu desenho atual no localStorage
+    function addPixelColorsToLocalStorage() {
+        let pixels = document.querySelectorAll('#pixel-board li');
+        let pixelsArray = [];
+        for (let index = 0; index < pixels.length; index += 1) {
+            pixelsArray.push(pixels[index].style.backgroundColor);
+        }
+        localStorage.setItem('pixelBoard', JSON.stringify(pixelsArray));
+    }
 }
+
+
+
 
 
