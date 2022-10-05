@@ -123,6 +123,20 @@ window.onload = function () {
         let colorSelected = document.querySelector('.selected').style.backgroundColor;
         event.target.style.backgroundColor = colorSelected;
     }
+
+    // Crie um botão que retorne a cor do quadro para a cor inicial.
+    let buttonResetSection = document.getElementById('button-reset');
+    let resetButton = document.createElement('button'); // Cria o elemento botão no HTML;
+    resetButton.id = 'clear-board';
+    resetButton.innerHTML = 'Limpar';
+    buttonResetSection.appendChild(resetButton);
+
+    resetButton.addEventListener('click', function(){
+        let pixels = document.querySelectorAll('#pixel-board li');
+        for (let index = 0; index < pixels.length; index += 1) {
+            pixels[index].style.backgroundColor = 'white';
+        }
+    });
 }
 
 
