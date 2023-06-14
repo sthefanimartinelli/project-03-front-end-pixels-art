@@ -39,7 +39,7 @@ window.onload = function () {
         let randomColorButton = document.createElement('button'); // Cria o elemento botão no HTML;
         randomColorButton.id = 'button-random-color';
         randomColorButton.innerHTML = 'Cores aleatórias';
-        buttonSection.appendChild(randomColorButton); // Adciona o botão como filho do body;
+        buttonSection.appendChild(randomColorButton); // Adciona o botão como filho da buttonSection;
 
         randomColorButton.addEventListener('click', function () { // Adiciona um escutador de eventos, que vai disparado quando o mouse clicar no botão;
             let itensPaleta = document.getElementsByClassName('color'); // Busca as li criadas anteriormente, que formam a paleta de cores, isso é uma array com objetos (HTML collection);
@@ -110,7 +110,6 @@ window.onload = function () {
             }
         }
     }
-
 
     function addColorToPixels() {
         let pixels = document.querySelectorAll('#pixel-board li')
@@ -192,8 +191,6 @@ window.onload = function () {
     }
 
     // Crie um input que permita à pessoa usuária preencher um novo tamanho para o quadro de pixels.
-    let changeBoardSizeButton = document.querySelector('#generate-board');
-
     changeBoardSizeButton.addEventListener('click', function () {
         let inputNumber = limitInput();
         if (inputNumber) {
